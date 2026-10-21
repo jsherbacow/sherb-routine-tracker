@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Connect iPhone · Sherb Routine Tracker</title>
+<link rel="stylesheet" href="app.css?v=1">
+<style>
+  body { -webkit-user-select: text; user-select: text; }
+  .pair { max-width: 520px; margin: 40px auto; padding: 28px; border-radius: 24px; background: rgba(255,255,255,.08); border: 1px solid var(--line); }
+  .qr { background: #fff; border-radius: 18px; padding: 14px; width: 260px; height: 260px; margin: 22px auto; display: grid; place-items: center; }
+  .qr svg { width: 100%; height: 100%; }
+  ol { color: var(--muted); font-size: 15px; line-height: 1.7; padding-left: 20px; }
+  ol b { color: #fff; }
+  .warn { color: var(--warn); font-size: 13px; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="pair">
+  <div class="h1">Connect your iPhone.</div>
+  <div class="qr" id="qr">Loading…</div>
+  <ol>
+    <li>Open the <b>Camera</b> on your iPhone and point it at this code. Tap the link that appears.</li>
+    <li>In Safari, tap the <b>Share</b> button, then <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+    <li>Open <b>Sherb</b> from your home screen. Your habits appear within a few seconds.</li>
+  </ol>
+  <p class="warn">This code works like a password for your habit data. Don't share it or post a screenshot of it.</p>
+</div>
+<script src="config.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+  // The key stays in the URL fragment, which browsers never send to the server.
+  var m = location.hash.match(/k=([A-Za-z0-9_-]{32,})/);
+  var box = document.getElementById('qr');
+  if (!m) { box.textContent = 'Open this page from the desktop widget: gear, then Connect iPhone.'; }
+  else {
+    var qr = qrcode(0, 'M');
+    qr.addData(window.SRT_CONFIG.site + '#k=' + m[1]);
+    qr.make();
+    box.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 0, scalable: true });
+  }
+</script>
+</body>
+</html>
